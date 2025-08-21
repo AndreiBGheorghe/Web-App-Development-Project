@@ -1,0 +1,39 @@
+﻿@model List<Nota>
+@{
+    ViewData["Title"] = "Note Student";
+    var notePeAni = Model?.GroupBy(n => n.Curs.An).OrderBy(g => g.Key).ToList() ?? new List<IGrouping<int, Nota>>();
+    var currentSort = Context.Request.Query["sortOrder"].ToString();
+    var currentSearch = Context.Request.Query["search"].ToString();
+    string GetSortLink(string sortField) => Url.Action("NoteStudent", new { sortOrder = sortField, search = currentSearch });
+}
+
+<form method="get" class="mb-4">
+    <div class="input-group w-50">
+        <input type="text" name="search" class="form-control" placeholder="Cauta curs sau profesor" value="@currentSearch" />
+        <button type="submit" class="btn btn-outline-primary">Cauta</button>
+    </div>
+</form>
+
+<h2>Notele mele</h2>
+
+<div class="d-flex gap-2 mb-4 justify-content-start">
+    <a href="@GetSortLink(currentSort == "nume_asc" ? "nume_desc" : "nume_asc")" class="btn btn-primary btn-sm">Sorteaza dupa nume</a>
+    <a href="@GetSortLink(currentSort == "nota_asc" ? "nota_desc" : "nota_asc")" class="btn btn-secondary btn-sm">Sorteaza dupa nota</a>
+</div>
+
+@foreach (var grup in notePeAni)
+{
+    <table class="table mb-4">
+        <thead>
+            <tr><th colspan="3" class="fw-bold fs-5">Anul @grup.Key</th></tr>
+            <tr><th style="width: 40%;">Curs</th><th style="width: 30%;">Profesor</th><th style="width: 30%;">Nota</th></tr>
+        </thead>
+        <tbody>
+            @foreach (var nota in grup)
+            {
+                <tr><td>@nota.Curs.NumeCurs</td><td>@nota.Curs.Profesor.NumeProfesor @nota.Curs.Profesor.PrenumeProfesor</td><td>@nota.Valoare</td></tr>
+            }
+            <tr><td colspan="2"><b>Media</b></td><td><b>@grup.Average(n => n.Valoare).ToString("0.00")</b></td></tr>
+        </tbody>
+    </table>
+}

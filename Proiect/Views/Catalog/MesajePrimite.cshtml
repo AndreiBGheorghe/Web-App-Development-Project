@@ -1,0 +1,33 @@
+﻿@model List<Mesaj>
+@{
+    ViewData["Title"] = "Mesaje";
+}
+
+<h2>Mesaje primite</h2>
+
+@if (!Model.Any())
+{
+    <p>Nu ai mesaje.</p>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th style="width: 10%;">Data</th>
+                <th style="width: 10%;">Secretar</th>
+                <th style="width: 80%;">Mesaj</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var mesaj in Model)
+            {
+                <tr>
+                    <td>@mesaj.DataTrimiterii.ToString("dd.MM.yyyy")</td>
+                    <td>@mesaj.NumeSecretar</td>
+                    <td>@mesaj.Continut</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}

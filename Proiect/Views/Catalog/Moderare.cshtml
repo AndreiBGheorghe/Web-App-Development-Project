@@ -1,0 +1,99 @@
+﻿@{
+    ViewData["Title"] = "Moderare";
+    var profesori = ViewData["Profesori"] as List<Profesor>;
+    var cursuri = ViewData["Cursuri"] as List<Curs>;
+    var studenti = ViewData["Studenti"] as List<Student>;
+    var note = Model as List<Nota>;
+}
+
+<h2>Moderare</h2>
+<h4>Creaza Curs</h4>
+<form asp-action="CreeazaCurs" method="post" class="mb-3">
+    <input type="text" name="numeCurs" placeholder="Nume curs" required />
+    <input type="number" name="an" placeholder="An" required />
+    <select name="idProfesor" required>
+        <option value="">Alege profesor</option>
+        @foreach (var p in profesori)
+        {
+            <option value="@p.IdProfesor">@p.NumeProfesor @p.PrenumeProfesor</option>
+        }
+    </select>
+    <button type="submit" class="btn btn-primary">Creaza</button>
+</form>
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>Curs</th>
+            <th>An</th>
+            <th>Profesor</th>
+            <th>Studenti inscrisi</th>
+            <th>Modifica curs</th>
+            <th>Adauga student</th>
+            <th>Atribuie profesor</th>
+            <th>Sterge</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var curs in cursuri)
+        {
+            <tr>
+                <td>@curs.NumeCurs</td>
+                <td>@curs.An</td>
+                <td>@curs.Profesor?.NumeProfesor @curs.Profesor?.PrenumeProfesor</td>
+                <td>
+                    @foreach (var nota in note.Where(n => n.IdCurs == curs.IdCurs))
+                    {
+                        <div>@nota.Student?.NumeStudent @nota.Student?.PrenumeStudent</div>
+                    }
+                </td>
+                <td>
+                    <form asp-action="ModificaCurs" method="post">
+                        <input type="hidden" name="idCurs" value="@curs.IdCurs" />
+                        <input type="text" name="numeCurs" value="@curs.NumeCurs" required />
+                        <input type="number" name="an" value="@curs.An" required />
+                        <select name="idProfesor" required>
+                            <option value="">Alege profesor</option>
+                            @foreach (var p in profesori)
+                            {
+                                <option value="@p.IdProfesor">@p.NumeProfesor @p.PrenumeProfesor</option>
+                            }
+                        </select>
+                        <button type="submit" class="btn btn-sm btn-warning">Salveaza</button>
+                    </form>
+                </td>
+                <td>
+                    <form asp-action="AdaugaStudentLaCurs" method="post">
+                        <input type="hidden" name="idCurs" value="@curs.IdCurs" />
+                        <select name="idStudent" required>
+                            <option value="">Alege student</option>
+                            @foreach (var s in studenti)
+                            {
+                                <option value="@s.IdStudent">@s.NumeStudent @s.PrenumeStudent</option>
+                            }
+                        </select>
+                        <button type="submit" class="btn btn-sm btn-success">Adauga</button>
+                    </form>
+                </td>
+                <td>
+                    <form asp-action="AdaugaProfesor" method="post">
+                        <input type="hidden" name="idCurs" value="@curs.IdCurs" />
+                        <select name="idProfesor" required>
+                            <option value="">Alege profesor</option>
+                            @foreach (var p in profesori)
+                            {
+                                <option value="@p.IdProfesor">@p.NumeProfesor @p.PrenumeProfesor</option>
+                            }
+                        </select>
+                        <button type="submit" class="btn btn-sm btn-info">Atribuie</button>
+                    </form>
+                </td>
+                <td>
+                    <form asp-action="StergeCurs" method="post" onsubmit="return confirm('Esti sigur?');">
+                        <input type="hidden" name="idCurs" value="@curs.IdCurs" />
+                        <button type="submit" class="btn btn-sm btn-danger">Sterge</button>
+                    </form>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

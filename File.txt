@@ -1,0 +1,4 @@
+Tabel Curs - IdCurs NumeCurs An IdProfesor
+Tabel Student - IdStudent NumeStudent PrenumeStudent Grupa
+Tabel Nota - IdNota Valoare IdStudent IdCurs
+Tabel Profesor - IdProfesor NumeProfesor PrenumeProfesor

@@ -1,0 +1,57 @@
+﻿@{
+    ViewData["Title"] = "Pagina principala";
+    var rol = Context.Session.GetInt32("Rol");
+    var user = Context.Session.GetString("User");
+}
+
+<body class="bg-custom">
+    <h2>Pagina principala</h2>
+
+    @if (string.IsNullOrEmpty(user))
+    {
+        <a href="@Url.Action("Index", "Catalog")" class="btn btn-outline-primary">Login</a>
+    }
+    else
+    {
+        <p>Bun venit, @user!</p>
+    }
+
+    <div class="mb-4">
+        @if (rol == 1)
+        {
+            <div style="margin-bottom: 5px">
+                <a href="@Url.Action("NoteStudent", "Catalog")" class="btn btn-primary me-2">Notele Mele</a>
+            </div>
+            <div style="margin-bottom: 5px">
+                <a href="@Url.Action("AdeverintaPdf", "Catalog")" class="btn btn-secondary me-2">Genereaza Adeverinta</a>
+            </div>
+            <div style="margin-bottom: 5px">
+                <a href="@Url.Action("AlerteStudent", "Catalog")" class="btn btn-primary me-2">Alerte</a>
+            </div>
+        }
+        else if (rol == 2)
+        {
+            <div style="margin-bottom: 5px">
+                <a href="@Url.Action("CursuriProfesor", "Catalog")" class="btn btn-primary me-2">Cursurile mele</a>
+            </div>
+            <div style="margin-bottom: 5px">
+                <a href="@Url.Action("MesajePrimite", "Catalog")" class="btn btn-secondary me-2">Mesaje</a>
+            </div>
+        }
+        else if (rol == 3)
+        {
+            <div style="margin-bottom: 5px">
+                <a href="@Url.Action("CataloageSecretar", "Catalog")" class="btn btn-primary me-2">Cataloage</a>
+            </div>
+            <div style="margin-bottom: 5px">
+                <a href="@Url.Action("TrimiteMesaj", "Catalog")" class="btn btn-secondary me-2">Trimite Mesaj</a>
+            </div>
+        }
+        else if (rol == 4)
+        {
+            <div style="margin-bottom: 5px">
+                <a href="@Url.Action("Moderare", "Catalog")" class="btn btn-primary me-2">Moderare</a>
+            </div>
+        }
+    </div>
+</body>

@@ -1,0 +1,62 @@
+﻿@model List<Curs>
+@{
+    ViewData["Title"] = "Cursurile mele";
+    var notePeCurs = ViewData["NotePeCurs"] as Dictionary<int, List<Nota>>;
+}
+
+<h2>Cursurile mele</h2>
+
+@if (!Model.Any())
+{
+    <p>Nu predati niciun curs</p>
+}
+else
+{
+    <form method="post" asp-action="SalveazaNote" asp-controller="Catalog">
+        @foreach (var curs in Model)
+        {
+            <h4>@curs.NumeCurs (Anul @curs.An)</h4>
+            <table class="table mb-4">
+                <thead>
+                    <tr>
+                        <th>Student</th>
+                        <th>Nota</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (notePeCurs != null && notePeCurs.ContainsKey(curs.IdCurs))
+                    {
+                        foreach (var nota in notePeCurs[curs.IdCurs])
+                        {
+                            <tr>
+                                <td>@nota.Student.NumeStudent @nota.Student.PrenumeStudent</td>
+                                <td><input type="number" step="0.01" name="note[@nota.IdNota]" value="@nota.Valoare" class="form-control" oninput="valideazaNota(this)"/></td>
+                            </tr>
+                        }
+                    }
+                    else
+                    {
+                        <tr><td colspan="2">Nu sunt studenti</td></tr>
+                    }
+                </tbody>
+            </table>
+        }
+        <button type="submit" class="btn btn-primary">Salveaza</button>
+    </form>
+}
+
+<script>
+    function valideazaNota(input) {
+        const valoare = parseFloat(input.value);
+        if (valoare > 10 || valoare < 0)
+        {
+            alert("Nota nu este valida.");
+            input.value = "";
+            input.classList.add("is-invalid");
+        }
+        else
+        {
+            input.classList.remove("is-invalid");
+        }
+    }
+</script>

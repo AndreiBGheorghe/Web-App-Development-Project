@@ -1,0 +1,24 @@
+﻿@model Utilizator
+@{
+    ViewData["Title"] = "Autentificare";
+}
+
+<body class="bg-custom">
+    <h2>Autentificare</h2>
+    @using (Html.BeginForm("Login", "Catalog", FormMethod.Post))
+    {
+        <div>
+            <label for="NumeUtilizator">Nume utilizator</label>
+            <input type="text" name="NumeUtilizator" class="form-control" required />
+        </div>
+        <div>
+            <label for="Parola">Parola</label>
+            <input type="password" name="Parola" class="form-control" required />
+        </div>
+        <button type="submit" class="btn btn-primary mt-2">Login</button>
+    }
+    @if (ViewBag.Error != null)
+    {
+        <p style="color:red; margin-top:10px;">@ViewBag.Error</p>
+    }
+</body>

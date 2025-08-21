@@ -1,0 +1,46 @@
+﻿@model List<Mesaj>
+@{
+    ViewData["Title"] = "Trimite Mesaj";
+    var profesori = ViewData["Profesori"] as List<Profesor>;
+}
+
+<h2>Trimite un mesaj catre un profesor</h2>
+
+<form asp-action="TrimiteMesaj" method="post">
+    <div class="form-group">
+        <label for="idProfesor">Profesor</label>
+        <select name="idProfesor" class="form-control">
+            @foreach (var profesor in profesori)
+            {
+                <option value="@profesor.IdProfesor">@profesor.NumeProfesor @profesor.PrenumeProfesor</option>
+            }
+        </select>
+    </div>
+    <div class="form-group">
+        <label for="continut">Mesaj</label>
+        <textarea name="continut" class="form-control" rows="4" required></textarea>
+    </div><br>
+    <button type="submit" class="btn btn-primary">Trimite</button>
+</form>
+
+<h3>Mesaje trimise</h3>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th style="width: 10%;">Data</th>
+            <th style="width: 10%;">Secretar</th>
+            <th style="width: 80%;">Mesaj</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var mesaj in Model)
+        {
+            <tr>
+                <td>@mesaj.DataTrimiterii.ToString("dd.MM.yyyy")</td>
+                <td>@mesaj.NumeSecretar</td>
+                <td>@mesaj.Continut</td>
+            </tr>
+        }
+    </tbody>
+</table>
